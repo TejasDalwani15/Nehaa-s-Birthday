@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Birthday, My Love!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Three.js for 3D cake -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+    <!-- Firebase Libraries -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
+</head>
+<body>
+    <!-- 3D Cake Container -->
+    <div id="cake-container" class="cake-container">
+        <div class="cake-overlay">
+            <h2>Scroll Down to Celebrate!</h2>
+            <div class="scroll-indicator">
+                <div class="mouse">
+                    <div class="wheel"></div>
+                </div>
+                <div>
+                    <span class="arrow-down"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="birthday-card">
+            <h1 class="title interactive-element">Happy Birthday!</h1>
+            <h2 class="subtitle interactive-element">To my amazing girlfriend</h2>
+            
+            <div class="message-container interactive-element">
+                <p class="message">On this special day, I want to celebrate you and everything you mean to me. You bring so much joy and love into my life every single day.</p>
+            </div>
+
+            <div class="music-player">
+                <h3 class="interactive-element">A Song Just For You</h3>
+                <div class="player-container">
+                    <audio id="song" preload="auto">
+                        <source src="/assets/Amongg all the girls in the world.mp3" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <div class="controls">
+                        <button id="play-pause" class="play-button interactive-element">▶️</button>
+                        <div class="progress-container">
+                            <div class="progress-bar" id="progress-bar"></div>
+                        </div>
+                        <div class="volume-container">
+                            <span>🔈</span>
+                            <input type="range" id="volume" min="0" max="1" step="0.1" value="0.7">
+                        </div>
+                    </div>
+                </div>
+                <p class="song-note">I made this song especially for you ❤️</p>
+            </div>
+
+            <!-- Fireworks Animation -->
+            <div class="fireworks-container" id="fireworks-container">
+                <button id="launch-fireworks" class="fireworks-button interactive-element">
+                    <span>Launch Birthday Fireworks!</span>
+                    <span class="firework-icon">🎆</span>
+                </button>
+                <canvas id="fireworks-canvas"></canvas>
+            </div>
+
+            <!-- New Photo Gallery Section -->
+            <div class="photo-gallery-section">
+                <h3 class="interactive-element">Our Beautiful Moments</h3>
+                <p>Click on any photo to see a special message</p>
+                
+                <div id="photo-gallery" class="photo-gallery">
+                    <!-- Sample photos - replace src with actual photos of your girlfriend -->
+                    <div class="photo-item interactive-element">
+                        <img src="/assets/20220429_084359.jpg" alt="Beautiful moment 1">
+                    </div>
+                    <div class="photo-item interactive-element">
+                        <img src="/assets/20230428_162457.jpg" alt="Beautiful moment 2">
+                    </div>
+                    <div class="photo-item interactive-element">
+                        <img src="/assets/20240428_132414.jpg" alt="Beautiful moment 3">
+                    </div>
+                    <div class="photo-item interactive-element">
+                        <img src="/assets/20231007_221024.jpg" alt="Beautiful moment 4">
+                    </div>
+                    <div class="photo-item interactive-element">
+                        <img src="/assets/20240428_142110.jpg" alt="Beautiful moment 5">
+                    </div>
+                    <div class="photo-item interactive-element">
+                        <img src="/assets/IMG-20241003-WA0013.jpg" alt="Beautiful moment 6">
+                    </div>
+                </div>
+                
+                <!-- Photo Upload Section with explanation -->
+                <div class="photo-upload-section">
+                    <input type="file" id="photo-upload" class="photo-upload-input" accept="image/*" multiple>
+                    <button id="upload-photo-btn" class="upload-button interactive-element">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        Add More Photos
+                    </button>
+                    <div class="photo-storage-info">
+                        <p>Photos you add will be saved in your browser and visible only to you on this device.</p>
+                        <p>To save them permanently, take a screenshot or save the image.</p>
+                        <button id="share-photos-btn" class="share-button interactive-element">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="18" cy="5" r="3"></circle>
+                                <circle cx="6" cy="12" r="3"></circle>
+                                <circle cx="18" cy="19" r="3"></circle>
+                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                            </svg>
+                            Share Your Gallery
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Photo Modal -->
+            <div id="photo-modal" class="photo-modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button id="close-modal" class="close-modal">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-image-container">
+                            <img id="modal-image" class="modal-image" src="/placeholder.svg" alt="Full size photo">
+                        </div>
+                        <div id="modal-message" class="modal-message"></div>
+                    </div>
+                    <div class="modal-navigation">
+                        <button id="prev-photo" class="nav-button">Previous</button>
+                        <button id="next-photo" class="nav-button">Next</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Virtual Gift Section -->
+            <div class="gift-section">
+                <h3 class="interactive-element">Unwrap Your Virtual Gifts</h3>
+                <p>Click on each gift to unwrap a special surprise!</p>
+                
+                <div class="gifts-container">
+                    <div class="gift-box interactive-element" data-gift="1">
+                        <div class="gift-lid"></div>
+                        <div class="gift-box-body"></div>
+                        <div class="gift-ribbon"></div>
+                        <div class="gift-content">
+                            <p>You are the most beautiful person I've ever met, inside and out! ❤️</p>
+                            <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" alt="Beautiful gift" class="gift-image">
+                        </div>
+                    </div>
+                    
+                    <div class="gift-box interactive-element" data-gift="2">
+                        <div class="gift-lid"></div>
+                        <div class="gift-box-body"></div>
+                        <div class="gift-ribbon"></div>
+                        <div class="gift-content">
+                            <p>Your smile lights up my world every single day!</p>
+                            <img src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif" alt="Smile gift" class="gift-image">
+                        </div>
+                    </div>
+                    
+                    <div class="gift-box interactive-element" data-gift="3">
+                        <div class="gift-lid"></div>
+                        <div class="gift-box-body"></div>
+                        <div class="gift-ribbon"></div>
+                        <div class="gift-content">
+                            <p>I promise to make you smile every day for the rest of our lives!</p>
+                            <img src="https://media.giphy.com/media/l4KibK3JwaVo0CjDO/giphy.gif" alt="Promise gift" class="gift-image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="memory-gallery">
+                <h3 class="interactive-element">Our Memories</h3>
+                <div class="gallery-container">
+                    <div class="memory-card interactive-element" id="memory1">
+                        <div class="memory-front">Click to see a memory</div>
+                        <div class="memory-back">
+                            <p>15th January 2024, The Day I will never forget.I got my very first "I Love you too❤️" from you</p>
+                        </div>
+                    </div>
+                    <div class="memory-card interactive-element" id="memory2">
+                        <div class="memory-front">Another special moment</div>
+                        <div class="memory-back">
+                            <p>9th September 2024, you kissed my hand, I still remember that lips printed on my hand 💋</p>
+                        </div>
+                    </div>
+                    <div class="memory-card interactive-element" id="memory3">
+                        <div class="memory-front">One more surprise</div>
+                        <div class="memory-back">
+                            <p>17th September 2024, Our very first CUDDLE, I loved how you smell, My nostrills are still dying to sense that smell again🥹</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="interactive-section">
+                <h3 class="interactive-element">Click the heart to see how much I love you</h3>
+                <div class="heart-container">
+                    <div class="heart interactive-element" id="heart">❤️</div>
+                </div>
+                <div id="love-meter">0%</div>
+            </div>
+
+            <!-- Animated Love Letter -->
+            <div class="love-letter-section">
+                <h3 class="interactive-element">A Special Message For You</h3>
+                <div class="love-letter">
+                    <div id="typewriter-text" class="typewriter-text"></div>
+                    <button id="read-letter-btn" class="read-letter-btn interactive-element">Read My Letter</button>
+                </div>
+            </div>
+
+            <div class="wishes-section">
+                <h3 class="interactive-element">Birthday Wishes</h3>
+                <ul class="wishes-list">
+                    <li class="interactive-element">May your day be as beautiful as your smile</li>
+                    <li class="interactive-element">May this year bring you all the happiness you deserve</li>
+                    <li class="interactive-element">May all your dreams come true</li>
+                    <li class="interactive-element">May our love continue to grow stronger each day</li>
+                </ul>
+            </div>
+
+            <div class="final-message">
+                <p class="interactive-element">I love you more than words can express.</p>
+                <p class="interactive-element">Happy Birthday, my love!</p>
+                <p class="signature interactive-element">With all my heart,<br>Your Tejuuss aka masao🌸</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="proposal-section">
+        <div id="love-question">
+            <h3>Do you love me?</h3>
+            <div class="proposal-buttons">
+                <button id="yes-btn" class="proposal-btn">Yes 💖</button>
+                <button id="no-btn" class="proposal-btn">No 😅</button>
+            </div>
+        </div>
+        <div id="proposal-response" class="proposal-response"></div>
+    </div>
+
+    <div id="confetti-container"></div>
+    <div id="hearts-container"></div>
+
+    <script src="cake.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
