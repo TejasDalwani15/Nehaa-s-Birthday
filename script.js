@@ -11,13 +11,13 @@ document.addEventListener("DOMContentLoaded", () => {
       click: new Audio("https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"),
       success: new Audio("https://assets.mixkit.co/active_storage/sfx/270/270-preview.mp3"),
       sparkle: new Audio("https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"),
-      whoosh: new Audio("/assets/zipper-43841.mp3"),
+      whoosh: new Audio("assets/zipper-43841.mp3"),
       pop: new Audio("https://assets.mixkit.co/active_storage/sfx/2/2-preview.mp3"),
-      magic: new Audio("/assets/PRESENT  GIFT SOUND EFFECTS  COPYRIGHT FREE.mp3"),
+      magic: new Audio("assets/PRESENT  GIFT SOUND EFFECTS  COPYRIGHT FREE.mp3"),
       firework: new Audio("https://assets.mixkit.co/active_storage/sfx/1022/1022-preview.mp3"),
       heart: new Audio("https://assets.mixkit.co/active_storage/sfx/209/209-preview.mp3"),
-      yayy: new Audio("/assets/Yayyy! Sound Effect.mp3"),
-      perfect: new Audio("/assets/Ed Sheeran - Perfect.mp3"),
+      yayy: new Audio("assets/Yayyy! Sound Effect.mp3"),
+      perfect: new Audio("assets/Ed Sheeran - Perfect.mp3"),
     }
   
     // Set volume for sound effects
